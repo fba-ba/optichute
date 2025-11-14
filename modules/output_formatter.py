@@ -18,6 +18,12 @@ class OutputFormatter:
         self.kerf_m = self.kerf_mm / 1000.0
         self.logger = logging.getLogger(__name__)
         self.visualizer = CuttingVisualizer(self.kerf_mm)
+        
+        # Pre-calculate all required piece IDs for efficiency
+        self.all_required_ids = set()
+        for piece in self.required:
+            for i in range(piece.get('quantity', 1)):
+                self.all_required_ids.add(f"{piece.get('id', 'P')}-{i+1}")
 
     def print_solution_with_visualization(self, rank, solution):
         """Print a solution with ASCII visualization."""
@@ -74,6 +80,13 @@ class OutputFormatter:
         print(f"SOLUTION #{rank} - {pieces_cut}/{total_required_pieces} pieces ({completion:.1f}% complete)")
         print(f"{'─' * 80}")
         
+        # Determine unfulfilled pieces for this solution
+        cut_piece_ids = set(p['id'] for cut in solution for p in cut['cuts'])
+        unfulfilled_ids = sorted(list(self.all_required_ids - cut_piece_ids))
+        
+        if unfulfilled_ids:
+            print(f"Unfulfilled pieces: {', '.join(unfulfilled_ids)}")
+        
         for i, cut in enumerate(solution, 1):
             stock_id = cut['stock_id']
             stock_length = cut['stock_length_m']
@@ -93,9 +106,9 @@ class OutputFormatter:
             print(f"  KERF LOSS: {num_cuts} cuts × {self.kerf_mm}mm = {kerf_loss:.4f}m")
             print(f"  UNUSED: {waste:.4f}m")
         
+        total_stock_pieces = sum(s.get('quantity', 1) for s in self.stock)
         print(f"\n{'─' * 80}")
-        print(f"TOTAL: {pieces_cut}/{total_required_pieces} pieces | " +
-              f"Waste: {total_waste:.4f}m | Stock used: {stock_used}/{len(self.stock)}")
+        print(f"TOTAL: {pieces_cut}/{total_required_pieces} pieces | Waste: {total_waste:.4f}m | Stock used: {stock_used}/{total_stock_pieces}")
     
     def _calculate_waste(self, cut):
         """Calculate waste for a cut."""
@@ -169,17 +182,8 @@ class OutputFormatter:
             })
         
         # Determine unfulfilled pieces
-        cut_pieces = set()
-        for cut in solution:
-            for piece in cut['cuts']:
-                cut_pieces.add(piece['id'])
-        
-        all_required = set()
-        for piece in self.required:
-            for i in range(piece.get('quantity', 1)):
-                all_required.add(f"{piece.get('id', 'P')}-{i+1}")
-        
-        unfulfilled = list(all_required - cut_pieces)
+        cut_piece_ids = set(p['id'] for cut in solution for p in cut['cuts'])
+        unfulfilled = sorted(list(self.all_required_ids - cut_piece_ids))
         
         return {
             "rank": rank,

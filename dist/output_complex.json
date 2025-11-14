@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generated_at": "2025-11-14T18:18:23.189673",
+    "generated_at": "2025-11-14T18:49:33.476133",
     "version": "1.0.0"
   },
   "input_summary": {
@@ -8,7 +8,7 @@
     "total_required_length_m": 15.3,
     "kerf_mm": 3,
     "algo_type": "greedy",
-    "computation_time_s": 0.0011
+    "computation_time_s": 0.0019
   },
   "solutions": [
     {
@@ -510,8 +510,8 @@
         }
       ],
       "unfulfilled_pieces": [
-        "P5-7",
         "P5-6",
+        "P5-7",
         "P5-8"
       ]
     }
