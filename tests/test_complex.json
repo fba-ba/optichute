@@ -1,0 +1,21 @@
+{
+  "config": {
+    "kerf_mm": 3,
+    "top_n_solutions": 15,
+    "algo_type": "recursive",
+    "log_level": "DEBUG",
+    "output_file": "output_complex.json"
+  },
+  "stock": [
+    {"id": "A", "length_m": 3.0, "quantity": 2},
+    {"id": "B", "length_m": 2.5, "quantity": 2},
+    {"id": "C", "length_m": 1.5, "quantity": 3}
+  ],
+  "required": [
+    {"id": "P1", "length_m": 0.6, "quantity": 5},
+    {"id": "P2", "length_m": 0.8, "quantity": 4},
+    {"id": "P3", "length_m": 0.45, "quantity": 6},
+    {"id": "P4", "length_m": 1.2, "quantity": 3},
+    {"id": "P5", "length_m": 0.35, "quantity": 8}
+  ]
+}

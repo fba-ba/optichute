@@ -1,0 +1,15 @@
+{
+  "config": {
+    "kerf_mm": 3,
+    "top_n_solutions": 5,
+    "algo_type": "recursive",
+    "log_level": "INFO"
+  },
+  "stock": [
+    {"id": "S1", "length_m": 1.0, "quantity": 2}
+  ],
+  "required": [
+    {"id": "P1", "length_m": 0.5, "quantity": 3},
+    {"id": "P2", "length_m": 0.8, "quantity": 2}
+  ]
+}

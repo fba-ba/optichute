@@ -1,0 +1,18 @@
+{
+  "config": {
+    "kerf_mm": 2,
+    "top_n_solutions": 10,
+    "algo_type": "recursive",
+    "log_level": "INFO",
+    "output_file": "output_minimal_waste.json"
+  },
+  "stock": [
+    {"id": "S1", "length_m": 2.0, "quantity": 3}
+  ],
+  "required": [
+    {"id": "P1", "length_m": 0.5, "quantity": 2},
+    {"id": "P2", "length_m": 0.7, "quantity": 2},
+    {"id": "P3", "length_m": 0.6, "quantity": 2},
+    {"id": "P4", "length_m": 0.4, "quantity": 2}
+  ]
+}
