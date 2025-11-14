@@ -1,5 +1,6 @@
 import json
 import logging
+from modules.visualizer import CuttingVisualizer
 from datetime import datetime
 
 
@@ -16,8 +17,25 @@ class OutputFormatter:
         self.kerf_mm = config.get('kerf_mm', 0)
         self.kerf_m = self.kerf_mm / 1000.0
         self.logger = logging.getLogger(__name__)
-    
-    def print_console(self):
+        self.visualizer = CuttingVisualizer(self.kerf_mm)
+
+    def print_solution_with_visualization(self, rank, solution):
+        """Print a solution with ASCII visualization."""
+        # Print regular solution details
+        self._print_solution(rank, solution)
+        
+        # Add visualization
+        print("\n" + "=" * 80)
+        print("VISUAL CUTTING PLAN")
+        print("=" * 80)
+        print(self.visualizer.visualize_solution(solution))
+        print("\n" + "=" * 80)
+        print("COMPACT VIEW")
+        print("=" * 80)
+        print(self.visualizer.create_compact_view(solution))
+
+        
+    def print_console(self, visualize=True):
         """Print results to console."""
         print("\n" + "=" * 80)
         print("WOOD CUTTING OPTIMIZATION RESULTS")
@@ -36,7 +54,10 @@ class OutputFormatter:
         
         # Print top solutions
         for rank, solution in enumerate(self.solutions, 1):
-            self._print_solution(rank, solution)
+            if visualize:
+                self.print_solution_with_visualization(rank, solution)
+            else:
+                self._print_solution(rank, solution)
             
             if rank >= self.config.get('top_n_solutions', 10):
                 break

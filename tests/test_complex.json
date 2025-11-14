@@ -2,7 +2,7 @@
   "config": {
     "kerf_mm": 3,
     "top_n_solutions": 15,
-    "algo_type": "recursive",
+    "algo_type": "greedy",
     "log_level": "DEBUG",
     "output_file": "output_complex.json"
   },

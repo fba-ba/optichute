@@ -8,6 +8,9 @@ import sys
 import json
 import time
 from pathlib import Path
+from modules.solver_recursive import RecursiveSolver
+from modules.solver_greedy import GreedySolver
+
 
 # Add modules to path
 sys.path.insert(0, str(Path(__file__).parent))
@@ -49,16 +52,15 @@ def main():
         
         # Select algorithm
         algo_type = config.get('algo_type', 'recursive').lower()
-        
+
         if algo_type == 'recursive':
             solver = RecursiveSolver(stock, required, config)
             solutions = solver.solve()
         elif algo_type == 'greedy':
-            logger.warning("Greedy algorithm not yet implemented. Using recursive.")
-            solver = RecursiveSolver(stock, required, config)
+            solver = GreedySolver(stock, required, config)
             solutions = solver.solve()
         else:
-            raise ValueError(f"Unknown algorithm type: {algo_type}")
+            raise ValueError(f"Unknown algorithm type: {algo_type}")    
         
         # Calculate computation time
         computation_time = time.time() - start_time
@@ -66,9 +68,11 @@ def main():
         
         # Format and display output
         formatter = OutputFormatter(config, stock, required, solutions, computation_time)
-        
+
+
         # Console output
-        formatter.print_console()
+        visualize = config.get('visualize', True)
+        formatter.print_console(visualize=visualize)
         
         # JSON output (if requested)
         output_file = config.get('output_file')
