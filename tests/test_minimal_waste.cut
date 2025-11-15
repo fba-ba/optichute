@@ -1,0 +1,705 @@
+{
+  "metadata": {
+    "generated_at": "2025-11-15T15:56:29.006271",
+    "version": "1.0.0"
+  },
+  "input_summary": {
+    "total_stock_length": 6000,
+    "total_required_length": 4400,
+    "kerf": 2,
+    "algo_type": "recursive",
+    "computation_time_s": 0.356
+  },
+  "solutions": [
+    {
+      "rank": 1,
+      "score": {
+        "pieces_cut": 8,
+        "pieces_required": 8,
+        "completion_percentage": 100.0,
+        "total_waste": 1590,
+        "stock_pieces_used": 3
+      },
+      "cutting_plan": [
+        {
+          "stock_id": "S1-1",
+          "stock_length": 2000,
+          "cuts": [
+            {
+              "id": "P1-1",
+              "length": 500
+            },
+            {
+              "id": "P1-2",
+              "length": 500
+            }
+          ],
+          "kerf_loss": 2,
+          "unused": 998
+        },
+        {
+          "stock_id": "S1-2",
+          "stock_length": 2000,
+          "cuts": [
+            {
+              "id": "P2-1",
+              "length": 700
+            },
+            {
+              "id": "P2-2",
+              "length": 700
+            },
+            {
+              "id": "P4-1",
+              "length": 400
+            }
+          ],
+          "kerf_loss": 4,
+          "unused": 196
+        },
+        {
+          "stock_id": "S1-3",
+          "stock_length": 2000,
+          "cuts": [
+            {
+              "id": "P3-1",
+              "length": 600
+            },
+            {
+              "id": "P3-2",
+              "length": 600
+            },
+            {
+              "id": "P4-2",
+              "length": 400
+            }
+          ],
+          "kerf_loss": 4,
+          "unused": 396
+        }
+      ],
+      "unfulfilled_pieces": []
+    },
+    {
+      "rank": 2,
+      "score": {
+        "pieces_cut": 8,
+        "pieces_required": 8,
+        "completion_percentage": 100.0,
+        "total_waste": 1590,
+        "stock_pieces_used": 3
+      },
+      "cutting_plan": [
+        {
+          "stock_id": "S1-1",
+          "stock_length": 2000,
+          "cuts": [
+            {
+              "id": "P1-1",
+              "length": 500
+            },
+            {
+              "id": "P1-2",
+              "length": 500
+            }
+          ],
+          "kerf_loss": 2,
+          "unused": 998
+        },
+        {
+          "stock_id": "S1-2",
+          "stock_length": 2000,
+          "cuts": [
+            {
+              "id": "P2-1",
+              "length": 700
+            },
+            {
+              "id": "P2-2",
+              "length": 700
+            },
+            {
+              "id": "P4-2",
+              "length": 400
+            }
+          ],
+          "kerf_loss": 4,
+          "unused": 196
+        },
+        {
+          "stock_id": "S1-3",
+          "stock_length": 2000,
+          "cuts": [
+            {
+              "id": "P3-1",
+              "length": 600
+            },
+            {
+              "id": "P3-2",
+              "length": 600
+            },
+            {
+              "id": "P4-1",
+              "length": 400
+            }
+          ],
+          "kerf_loss": 4,
+          "unused": 396
+        }
+      ],
+      "unfulfilled_pieces": []
+    },
+    {
+      "rank": 3,
+      "score": {
+        "pieces_cut": 8,
+        "pieces_required": 8,
+        "completion_percentage": 100.0,
+        "total_waste": 1590,
+        "stock_pieces_used": 3
+      },
+      "cutting_plan": [
+        {
+          "stock_id": "S1-1",
+          "stock_length": 2000,
+          "cuts": [
+            {
+              "id": "P1-1",
+              "length": 500
+            },
+            {
+              "id": "P1-2",
+              "length": 500
+            }
+          ],
+          "kerf_loss": 2,
+          "unused": 998
+        },
+        {
+          "stock_id": "S1-2",
+          "stock_length": 2000,
+          "cuts": [
+            {
+              "id": "P2-1",
+              "length": 700
+            },
+            {
+              "id": "P3-1",
+              "length": 600
+            },
+            {
+              "id": "P3-2",
+              "length": 600
+            }
+          ],
+          "kerf_loss": 4,
+          "unused": 96
+        },
+        {
+          "stock_id": "S1-3",
+          "stock_length": 2000,
+          "cuts": [
+            {
+              "id": "P2-2",
+              "length": 700
+            },
+            {
+              "id": "P4-1",
+              "length": 400
+            },
+            {
+              "id": "P4-2",
+              "length": 400
+            }
+          ],
+          "kerf_loss": 4,
+          "unused": 496
+        }
+      ],
+      "unfulfilled_pieces": []
+    },
+    {
+      "rank": 4,
+      "score": {
+        "pieces_cut": 8,
+        "pieces_required": 8,
+        "completion_percentage": 100.0,
+        "total_waste": 1590,
+        "stock_pieces_used": 3
+      },
+      "cutting_plan": [
+        {
+          "stock_id": "S1-1",
+          "stock_length": 2000,
+          "cuts": [
+            {
+              "id": "P1-1",
+              "length": 500
+            },
+            {
+              "id": "P1-2",
+              "length": 500
+            }
+          ],
+          "kerf_loss": 2,
+          "unused": 998
+        },
+        {
+          "stock_id": "S1-2",
+          "stock_length": 2000,
+          "cuts": [
+            {
+              "id": "P2-1",
+              "length": 700
+            },
+            {
+              "id": "P3-1",
+              "length": 600
+            },
+            {
+              "id": "P4-1",
+              "length": 400
+            }
+          ],
+          "kerf_loss": 4,
+          "unused": 296
+        },
+        {
+          "stock_id": "S1-3",
+          "stock_length": 2000,
+          "cuts": [
+            {
+              "id": "P2-2",
+              "length": 700
+            },
+            {
+              "id": "P3-2",
+              "length": 600
+            },
+            {
+              "id": "P4-2",
+              "length": 400
+            }
+          ],
+          "kerf_loss": 4,
+          "unused": 296
+        }
+      ],
+      "unfulfilled_pieces": []
+    },
+    {
+      "rank": 5,
+      "score": {
+        "pieces_cut": 8,
+        "pieces_required": 8,
+        "completion_percentage": 100.0,
+        "total_waste": 1590,
+        "stock_pieces_used": 3
+      },
+      "cutting_plan": [
+        {
+          "stock_id": "S1-1",
+          "stock_length": 2000,
+          "cuts": [
+            {
+              "id": "P1-1",
+              "length": 500
+            },
+            {
+              "id": "P1-2",
+              "length": 500
+            }
+          ],
+          "kerf_loss": 2,
+          "unused": 998
+        },
+        {
+          "stock_id": "S1-2",
+          "stock_length": 2000,
+          "cuts": [
+            {
+              "id": "P2-1",
+              "length": 700
+            },
+            {
+              "id": "P3-1",
+              "length": 600
+            },
+            {
+              "id": "P4-2",
+              "length": 400
+            }
+          ],
+          "kerf_loss": 4,
+          "unused": 296
+        },
+        {
+          "stock_id": "S1-3",
+          "stock_length": 2000,
+          "cuts": [
+            {
+              "id": "P2-2",
+              "length": 700
+            },
+            {
+              "id": "P3-2",
+              "length": 600
+            },
+            {
+              "id": "P4-1",
+              "length": 400
+            }
+          ],
+          "kerf_loss": 4,
+          "unused": 296
+        }
+      ],
+      "unfulfilled_pieces": []
+    },
+    {
+      "rank": 6,
+      "score": {
+        "pieces_cut": 8,
+        "pieces_required": 8,
+        "completion_percentage": 100.0,
+        "total_waste": 1590,
+        "stock_pieces_used": 3
+      },
+      "cutting_plan": [
+        {
+          "stock_id": "S1-1",
+          "stock_length": 2000,
+          "cuts": [
+            {
+              "id": "P1-1",
+              "length": 500
+            },
+            {
+              "id": "P1-2",
+              "length": 500
+            }
+          ],
+          "kerf_loss": 2,
+          "unused": 998
+        },
+        {
+          "stock_id": "S1-2",
+          "stock_length": 2000,
+          "cuts": [
+            {
+              "id": "P2-1",
+              "length": 700
+            },
+            {
+              "id": "P3-2",
+              "length": 600
+            },
+            {
+              "id": "P4-1",
+              "length": 400
+            }
+          ],
+          "kerf_loss": 4,
+          "unused": 296
+        },
+        {
+          "stock_id": "S1-3",
+          "stock_length": 2000,
+          "cuts": [
+            {
+              "id": "P2-2",
+              "length": 700
+            },
+            {
+              "id": "P3-1",
+              "length": 600
+            },
+            {
+              "id": "P4-2",
+              "length": 400
+            }
+          ],
+          "kerf_loss": 4,
+          "unused": 296
+        }
+      ],
+      "unfulfilled_pieces": []
+    },
+    {
+      "rank": 7,
+      "score": {
+        "pieces_cut": 8,
+        "pieces_required": 8,
+        "completion_percentage": 100.0,
+        "total_waste": 1590,
+        "stock_pieces_used": 3
+      },
+      "cutting_plan": [
+        {
+          "stock_id": "S1-1",
+          "stock_length": 2000,
+          "cuts": [
+            {
+              "id": "P1-1",
+              "length": 500
+            },
+            {
+              "id": "P1-2",
+              "length": 500
+            }
+          ],
+          "kerf_loss": 2,
+          "unused": 998
+        },
+        {
+          "stock_id": "S1-2",
+          "stock_length": 2000,
+          "cuts": [
+            {
+              "id": "P2-1",
+              "length": 700
+            },
+            {
+              "id": "P3-2",
+              "length": 600
+            },
+            {
+              "id": "P4-2",
+              "length": 400
+            }
+          ],
+          "kerf_loss": 4,
+          "unused": 296
+        },
+        {
+          "stock_id": "S1-3",
+          "stock_length": 2000,
+          "cuts": [
+            {
+              "id": "P2-2",
+              "length": 700
+            },
+            {
+              "id": "P3-1",
+              "length": 600
+            },
+            {
+              "id": "P4-1",
+              "length": 400
+            }
+          ],
+          "kerf_loss": 4,
+          "unused": 296
+        }
+      ],
+      "unfulfilled_pieces": []
+    },
+    {
+      "rank": 8,
+      "score": {
+        "pieces_cut": 8,
+        "pieces_required": 8,
+        "completion_percentage": 100.0,
+        "total_waste": 1590,
+        "stock_pieces_used": 3
+      },
+      "cutting_plan": [
+        {
+          "stock_id": "S1-1",
+          "stock_length": 2000,
+          "cuts": [
+            {
+              "id": "P1-1",
+              "length": 500
+            },
+            {
+              "id": "P1-2",
+              "length": 500
+            }
+          ],
+          "kerf_loss": 2,
+          "unused": 998
+        },
+        {
+          "stock_id": "S1-2",
+          "stock_length": 2000,
+          "cuts": [
+            {
+              "id": "P2-1",
+              "length": 700
+            },
+            {
+              "id": "P4-1",
+              "length": 400
+            },
+            {
+              "id": "P4-2",
+              "length": 400
+            }
+          ],
+          "kerf_loss": 4,
+          "unused": 496
+        },
+        {
+          "stock_id": "S1-3",
+          "stock_length": 2000,
+          "cuts": [
+            {
+              "id": "P2-2",
+              "length": 700
+            },
+            {
+              "id": "P3-1",
+              "length": 600
+            },
+            {
+              "id": "P3-2",
+              "length": 600
+            }
+          ],
+          "kerf_loss": 4,
+          "unused": 96
+        }
+      ],
+      "unfulfilled_pieces": []
+    },
+    {
+      "rank": 9,
+      "score": {
+        "pieces_cut": 8,
+        "pieces_required": 8,
+        "completion_percentage": 100.0,
+        "total_waste": 1590,
+        "stock_pieces_used": 3
+      },
+      "cutting_plan": [
+        {
+          "stock_id": "S1-1",
+          "stock_length": 2000,
+          "cuts": [
+            {
+              "id": "P1-1",
+              "length": 500
+            },
+            {
+              "id": "P1-2",
+              "length": 500
+            }
+          ],
+          "kerf_loss": 2,
+          "unused": 998
+        },
+        {
+          "stock_id": "S1-2",
+          "stock_length": 2000,
+          "cuts": [
+            {
+              "id": "P2-2",
+              "length": 700
+            },
+            {
+              "id": "P3-1",
+              "length": 600
+            },
+            {
+              "id": "P3-2",
+              "length": 600
+            }
+          ],
+          "kerf_loss": 4,
+          "unused": 96
+        },
+        {
+          "stock_id": "S1-3",
+          "stock_length": 2000,
+          "cuts": [
+            {
+              "id": "P2-1",
+              "length": 700
+            },
+            {
+              "id": "P4-1",
+              "length": 400
+            },
+            {
+              "id": "P4-2",
+              "length": 400
+            }
+          ],
+          "kerf_loss": 4,
+          "unused": 496
+        }
+      ],
+      "unfulfilled_pieces": []
+    },
+    {
+      "rank": 10,
+      "score": {
+        "pieces_cut": 8,
+        "pieces_required": 8,
+        "completion_percentage": 100.0,
+        "total_waste": 1590,
+        "stock_pieces_used": 3
+      },
+      "cutting_plan": [
+        {
+          "stock_id": "S1-1",
+          "stock_length": 2000,
+          "cuts": [
+            {
+              "id": "P1-1",
+              "length": 500
+            },
+            {
+              "id": "P1-2",
+              "length": 500
+            }
+          ],
+          "kerf_loss": 2,
+          "unused": 998
+        },
+        {
+          "stock_id": "S1-2",
+          "stock_length": 2000,
+          "cuts": [
+            {
+              "id": "P2-2",
+              "length": 700
+            },
+            {
+              "id": "P3-1",
+              "length": 600
+            },
+            {
+              "id": "P4-1",
+              "length": 400
+            }
+          ],
+          "kerf_loss": 4,
+          "unused": 296
+        },
+        {
+          "stock_id": "S1-3",
+          "stock_length": 2000,
+          "cuts": [
+            {
+              "id": "P2-1",
+              "length": 700
+            },
+            {
+              "id": "P3-2",
+              "length": 600
+            },
+            {
+              "id": "P4-2",
+              "length": 400
+            }
+          ],
+          "kerf_loss": 4,
+          "unused": 296
+        }
+      ],
+      "unfulfilled_pieces": []
+    }
+  ]
+}
