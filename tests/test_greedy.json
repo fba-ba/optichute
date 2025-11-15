@@ -3,8 +3,9 @@
     "kerf": 3,
     "top_n_solutions": 5,
     "algo_type": "greedy",
-    "log_level": "INFO",
-    "visualize": true
+    "timeout" : 60,
+    "visualize": false,
+    "delete_me": true 
   },
   "stock": [
     {"id": "A", "length": 2500},

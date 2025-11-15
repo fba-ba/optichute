@@ -21,6 +21,13 @@ from modules.output_formatter import OutputFormatter
 from modules.logger import setup_logger
 
 
+def run_solver_process(solver, result_list):
+    """Wrapper function to run solver in a separate process and store results."""
+    solutions = solver.solve()
+    if solutions:
+        result_list.extend(solutions)
+
+
 def main():
     """Main entry point for the wood optimizer."""
     
@@ -83,7 +90,7 @@ def main():
             with multiprocessing.Manager() as manager:
                 # Using a list proxy to get results back from the process
                 result_list = manager.list()
-                p = multiprocessing.Process(target=lambda s, r: r.extend(s.solve()), args=(solver, result_list))
+                p = multiprocessing.Process(target=run_solver_process, args=(solver, result_list))
                 p.start()
                 p.join(timeout)
                 if p.is_alive():
