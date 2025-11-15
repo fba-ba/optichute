@@ -1,18 +1,19 @@
 {
   "config": {
-    "kerf_mm": 2,
+    "kerf": 2,
     "top_n_solutions": 10,
     "algo_type": "recursive",
-    "log_level": "INFO",
-    "output_file": "output_minimal_waste.json"
+    "delete_me": true
   },
   "stock": [
-    {"id": "S1", "length_m": 2.0, "quantity": 3}
+    {"id": "S1-1", "length": 2000},
+    {"id": "S1-2", "length": 2000},
+    {"id": "S1-3", "length": 2000}
   ],
   "required": [
-    {"id": "P1", "length_m": 0.5, "quantity": 2},
-    {"id": "P2", "length_m": 0.7, "quantity": 2},
-    {"id": "P3", "length_m": 0.6, "quantity": 2},
-    {"id": "P4", "length_m": 0.4, "quantity": 2}
+    {"id": "P1-1", "length": 500}, {"id": "P1-2", "length": 500},
+    {"id": "P2-1", "length": 700}, {"id": "P2-2", "length": 700},
+    {"id": "P3-1", "length": 600}, {"id": "P3-2", "length": 600},
+    {"id": "P4-1", "length": 400}, {"id": "P4-2", "length": 400}
   ]
 }

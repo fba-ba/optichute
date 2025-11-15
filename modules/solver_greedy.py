@@ -17,43 +17,13 @@ class GreedySolver:
         self.stock = stock
         self.required = required
         self.config = config
-        self.kerf_mm = config.get('kerf_mm', 0)
-        self.kerf_m = self.kerf_mm / 1000.0
+        self.kerf = config.get('kerf', 0)
         self.top_n = config.get('top_n_solutions', 10)
         self.logger = logging.getLogger(__name__)
-        
-        # Expand stock and required based on quantities
-        self.stock_expanded = self._expand_stock()
-        self.required_expanded = self._expand_required()
-        
+
         # Solution storage
         self.solutions = []
-    
-    def _expand_stock(self):
-        """Expand stock list based on quantities."""
-        expanded = []
-        for piece in self.stock:
-            for i in range(piece.get('quantity', 1)):
-                expanded.append({
-                    'id': f"{piece.get('id', 'S')}-{i+1}",
-                    'original_id': piece.get('id', 'S'),
-                    'length_m': piece['length_m']
-                })
-        return expanded
-    
-    def _expand_required(self):
-        """Expand required list based on quantities."""
-        expanded = []
-        for piece in self.required:
-            for i in range(piece.get('quantity', 1)):
-                expanded.append({
-                    'id': f"{piece.get('id', 'P')}-{i+1}",
-                    'original_id': piece.get('id', 'P'),
-                    'length_m': piece['length_m'],
-                    'index': len(expanded)
-                })
-        return expanded
-    
+
     def solve(self):
         """
         Solve using multiple greedy strategies and return top N solutions.
@@ -61,8 +31,8 @@ class GreedySolver:
         Returns:
             List of top N solutions
         """
-        self.logger.info(f"Stock pieces: {len(self.stock_expanded)}")
-        self.logger.info(f"Required pieces: {len(self.required_expanded)}")
+        self.logger.info(f"Stock pieces: {len(self.stock)}")
+        self.logger.info(f"Required pieces: {len(self.required)}")
         
         strategies = [
             ('First Fit Decreasing', self._first_fit_decreasing),
@@ -86,13 +56,13 @@ class GreedySolver:
     def _first_fit_decreasing(self):
         """First Fit Decreasing strategy."""
         # Sort required pieces by length (descending)
-        required_sorted = sorted(self.required_expanded, 
-                                key=lambda x: x['length_m'], 
+        required_sorted = sorted(self.required, 
+                                key=lambda x: x['length'], 
                                 reverse=True)
         
         # Sort stock pieces by length (descending)
-        stock_sorted = sorted(self.stock_expanded, 
-                             key=lambda x: x['length_m'], 
+        stock_sorted = sorted(self.stock, 
+                             key=lambda x: x['length'], 
                              reverse=True)
         
         solution = []
@@ -103,15 +73,15 @@ class GreedySolver:
                 break
             
             cuts = []
-            remaining_length = stock_piece['length_m']
+            remaining_length = stock_piece['length']
             
             i = 0
             while i < len(remaining_required):
                 piece = remaining_required[i]
                 
                 # Calculate space needed including kerf
-                kerf_needed = self.kerf_m if cuts else 0
-                space_needed = piece['length_m'] + kerf_needed
+                kerf_needed = self.kerf if cuts else 0
+                space_needed = piece['length'] + kerf_needed
                 
                 if space_needed <= remaining_length:
                     cuts.append(piece)
@@ -123,7 +93,7 @@ class GreedySolver:
             if cuts:
                 solution.append({
                     'stock_id': stock_piece['id'],
-                    'stock_length_m': stock_piece['length_m'],
+                    'stock_length': stock_piece['length'],
                     'cuts': cuts
                 })
         
@@ -132,13 +102,13 @@ class GreedySolver:
     def _best_fit_decreasing(self):
         """Best Fit Decreasing strategy - minimizes waste per stock piece."""
         # Sort required pieces by length (descending)
-        required_sorted = sorted(self.required_expanded, 
-                                key=lambda x: x['length_m'], 
+        required_sorted = sorted(self.required, 
+                                key=lambda x: x['length'], 
                                 reverse=True)
         
         solution = []
         remaining_required = required_sorted[:]
-        available_stock = self.stock_expanded[:]
+        available_stock = self.stock[:]
         
         while remaining_required and available_stock:
             best_fit = None
@@ -149,15 +119,15 @@ class GreedySolver:
             # Try each stock piece
             for stock_idx, stock_piece in enumerate(available_stock):
                 cuts = []
-                remaining_length = stock_piece['length_m']
+                remaining_length = stock_piece['length']
                 temp_required = remaining_required[:]
                 
                 # Greedily fill this stock
                 i = 0
                 while i < len(temp_required):
                     piece = temp_required[i]
-                    kerf_needed = self.kerf_m if cuts else 0
-                    space_needed = piece['length_m'] + kerf_needed
+                    kerf_needed = self.kerf if cuts else 0
+                    space_needed = piece['length'] + kerf_needed
                     
                     if space_needed <= remaining_length:
                         cuts.append(piece)
@@ -179,7 +149,7 @@ class GreedySolver:
                 stock_piece = available_stock[best_stock_idx]
                 solution.append({
                     'stock_id': stock_piece['id'],
-                    'stock_length_m': stock_piece['length_m'],
+                    'stock_length': stock_piece['length'],
                     'cuts': best_cuts
                 })
                 
@@ -195,18 +165,18 @@ class GreedySolver:
     def _worst_fit_decreasing(self):
         """Worst Fit Decreasing strategy - spreads pieces across stock."""
         # Sort required pieces by length (descending)
-        required_sorted = sorted(self.required_expanded, 
-                                key=lambda x: x['length_m'], 
+        required_sorted = sorted(self.required, 
+                                key=lambda x: x['length'], 
                                 reverse=True)
         
         # Initialize bins (stock pieces)
         bins = []
-        for stock_piece in self.stock_expanded:
+        for stock_piece in self.stock:
             bins.append({
                 'stock_id': stock_piece['id'],
-                'stock_length_m': stock_piece['length_m'],
+                'stock_length': stock_piece['length'],
                 'cuts': [],
-                'remaining': stock_piece['length_m']
+                'remaining': stock_piece['length']
             })
         
         # Assign each piece to bin with most remaining space
@@ -216,8 +186,8 @@ class GreedySolver:
             max_remaining = -1
             
             for bin_data in bins:
-                kerf_needed = self.kerf_m if bin_data['cuts'] else 0
-                space_needed = piece['length_m'] + kerf_needed
+                kerf_needed = self.kerf if bin_data['cuts'] else 0
+                space_needed = piece['length'] + kerf_needed
                 
                 if space_needed <= bin_data['remaining']:
                     if bin_data['remaining'] > max_remaining:
@@ -226,9 +196,9 @@ class GreedySolver:
             
             # Add piece to best bin
             if best_bin:
-                kerf_needed = self.kerf_m if best_bin['cuts'] else 0
+                kerf_needed = self.kerf if best_bin['cuts'] else 0
                 best_bin['cuts'].append(piece)
-                best_bin['remaining'] -= (piece['length_m'] + kerf_needed)
+                best_bin['remaining'] -= (piece['length'] + kerf_needed)
         
         # Convert to solution format
         solution = []
@@ -236,7 +206,7 @@ class GreedySolver:
             if bin_data['cuts']:
                 solution.append({
                     'stock_id': bin_data['stock_id'],
-                    'stock_length_m': bin_data['stock_length_m'],
+                    'stock_length': bin_data['stock_length'],
                     'cuts': bin_data['cuts']
                 })
         
@@ -270,9 +240,9 @@ class GreedySolver:
     
     def _calculate_waste(self, cut):
         """Calculate waste for a single cut."""
-        stock_length = cut['stock_length_m']
-        cuts_length = sum(piece['length_m'] for piece in cut['cuts'])
+        stock_length = cut['stock_length']
+        cuts_length = sum(piece['length'] for piece in cut['cuts'])
         num_cuts = len(cut['cuts']) - 1 if len(cut['cuts']) > 0 else 0
-        kerf_loss = num_cuts * self.kerf_m
+        kerf_loss = num_cuts * self.kerf
         
         return stock_length - cuts_length - kerf_loss

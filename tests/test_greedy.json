@@ -1,28 +1,27 @@
 {
   "config": {
-    "kerf_mm": 3,
+    "kerf": 3,
     "top_n_solutions": 5,
     "algo_type": "greedy",
     "log_level": "INFO",
-    "output_file": "output_greedy.json",
     "visualize": true
   },
   "stock": [
-    {"id": "A", "length_m": 2.5, "quantity": 1},
-    {"id": "B", "length_m": 1.6, "quantity": 1},
-    {"id": "C", "length_m": 0.7, "quantity": 1}
+    {"id": "A", "length": 2500},
+    {"id": "B", "length": 1600},
+    {"id": "C", "length": 700}
   ],
   "required": [
-    {"id": "P1", "length_m": 0.5, "quantity": 1},
-    {"id": "P2", "length_m": 0.9, "quantity": 1},
-    {"id": "P3", "length_m": 0.4, "quantity": 1},
-    {"id": "P4", "length_m": 0.3, "quantity": 1},
-    {"id": "P5", "length_m": 0.75, "quantity": 1},
-    {"id": "P6", "length_m": 0.65, "quantity": 1},
-    {"id": "P7", "length_m": 0.52, "quantity": 1},
-    {"id": "P8", "length_m": 0.42, "quantity": 1},
-    {"id": "P9", "length_m": 0.25, "quantity": 1},
-    {"id": "P10", "length_m": 0.77, "quantity": 1},
-    {"id": "P11", "length_m": 0.89, "quantity": 1}
+    {"id": "P1", "length": 500},
+    {"id": "P2", "length": 900},
+    {"id": "P3", "length": 400},
+    {"id": "P4", "length": 300},
+    {"id": "P5", "length": 750},
+    {"id": "P6", "length": 650},
+    {"id": "P7", "length": 520},
+    {"id": "P8", "length": 420},
+    {"id": "P9", "length": 250},
+    {"id": "P10", "length": 770},
+    {"id": "P11", "length": 890}
   ]
 }

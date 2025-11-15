@@ -14,16 +14,12 @@ class OutputFormatter:
         self.required = required
         self.solutions = solutions
         self.computation_time = computation_time
-        self.kerf_mm = config.get('kerf_mm', 0)
-        self.kerf_m = self.kerf_mm / 1000.0
+        self.kerf = config.get('kerf', 0)
         self.logger = logging.getLogger(__name__)
-        self.visualizer = CuttingVisualizer(self.kerf_mm)
+        self.visualizer = CuttingVisualizer(self.kerf)
         
         # Pre-calculate all required piece IDs for efficiency
-        self.all_required_ids = set()
-        for piece in self.required:
-            for i in range(piece.get('quantity', 1)):
-                self.all_required_ids.add(f"{piece.get('id', 'P')}-{i+1}")
+        self.all_required_ids = {p['id'] for p in self.required}
 
     def print_solution_with_visualization(self, rank, solution):
         """Print a solution with ASCII visualization."""
@@ -48,13 +44,13 @@ class OutputFormatter:
         print("=" * 80)
         
         # Input summary
-        total_stock = sum(s['length_m'] * s.get('quantity', 1) for s in self.stock)
-        total_required = sum(r['length_m'] * r.get('quantity', 1) for r in self.required)
+        total_stock = sum(s['length'] for s in self.stock)
+        total_required = sum(r['length'] for r in self.required)
         
         print(f"\nINPUT SUMMARY:")
-        print(f"  Total stock available: {total_stock:.3f}m")
-        print(f"  Total required: {total_required:.3f}m")
-        print(f"  Kerf per cut: {self.kerf_mm}mm ({self.kerf_m:.4f}m)")
+        print(f"  Total stock available: {total_stock}mm")
+        print(f"  Total required: {total_required}mm")
+        print(f"  Kerf per cut: {self.kerf}mm")
         print(f"  Computation time: {self.computation_time:.3f}s")
         print(f"  Solutions found: {len(self.solutions)}")
         
@@ -71,7 +67,7 @@ class OutputFormatter:
     def _print_solution(self, rank, solution):
         """Print a single solution."""
         pieces_cut = sum(len(cut['cuts']) for cut in solution)
-        total_required_pieces = sum(r.get('quantity', 1) for r in self.required)
+        total_required_pieces = len(self.required)
         completion = (pieces_cut / total_required_pieces * 100) if total_required_pieces > 0 else 0
         total_waste = sum(self._calculate_waste(cut) for cut in solution)
         stock_used = len(solution)
@@ -89,41 +85,41 @@ class OutputFormatter:
         
         for i, cut in enumerate(solution, 1):
             stock_id = cut['stock_id']
-            stock_length = cut['stock_length_m']
+            stock_length = cut['stock_length']
             cuts = cut['cuts']
             
-            print(f"\nSTOCK #{i} ({stock_id}) - {stock_length}m:")
+            print(f"\nSTOCK #{i} ({stock_id}) - {stock_length}mm:")
             
             # List cuts
-            cut_list = ", ".join([f"{c['id']}({c['length_m']}m)" for c in cuts])
+            cut_list = ", ".join([f"{c['id']}({c['length']}mm)" for c in cuts])
             print(f"  CUT: {cut_list}")
             
             # Calculate kerf and waste
             num_cuts = len(cuts) - 1 if len(cuts) > 0 else 0
-            kerf_loss = num_cuts * self.kerf_m
+            kerf_loss = num_cuts * self.kerf
             waste = self._calculate_waste(cut)
             
-            print(f"  KERF LOSS: {num_cuts} cuts × {self.kerf_mm}mm = {kerf_loss:.4f}m")
-            print(f"  UNUSED: {waste:.4f}m")
+            print(f"  KERF LOSS: {num_cuts} cuts × {self.kerf}mm = {kerf_loss}mm")
+            print(f"  UNUSED: {waste}mm")
         
-        total_stock_pieces = sum(s.get('quantity', 1) for s in self.stock)
+        total_stock_pieces = len(self.stock)
         print(f"\n{'─' * 80}")
-        print(f"TOTAL: {pieces_cut}/{total_required_pieces} pieces | Waste: {total_waste:.4f}m | Stock used: {stock_used}/{total_stock_pieces}")
+        print(f"TOTAL: {pieces_cut}/{total_required_pieces} pieces | Waste: {total_waste}mm | Stock used: {stock_used}/{total_stock_pieces}")
     
     def _calculate_waste(self, cut):
         """Calculate waste for a cut."""
-        stock_length = cut['stock_length_m']
-        cuts_length = sum(c['length_m'] for c in cut['cuts'])
+        stock_length = cut['stock_length']
+        cuts_length = sum(c['length'] for c in cut['cuts'])
         num_cuts = len(cut['cuts']) - 1 if len(cut['cuts']) > 0 else 0
-        kerf_loss = num_cuts * self.kerf_m
+        kerf_loss = num_cuts * self.kerf
         
         return stock_length - cuts_length - kerf_loss
     
     def save_json(self, output_file):
         """Save results to JSON file."""
         # Build JSON structure
-        total_stock = sum(s['length_m'] * s.get('quantity', 1) for s in self.stock)
-        total_required = sum(r['length_m'] * r.get('quantity', 1) for r in self.required)
+        total_stock = sum(s['length'] for s in self.stock)
+        total_required = sum(r['length'] for r in self.required)
         
         output_data = {
             "metadata": {
@@ -131,11 +127,11 @@ class OutputFormatter:
                 "version": "1.0.0"
             },
             "input_summary": {
-                "total_stock_length_m": round(total_stock, 4),
-                "total_required_length_m": round(total_required, 4),
-                "kerf_mm": self.kerf_mm,
+                "total_stock_length": total_stock,
+                "total_required_length": total_required,
+                "kerf": self.kerf,
                 "algo_type": self.config.get('algo_type', 'recursive'),
-                "computation_time_s": round(self.computation_time, 4)
+                "computation_time_s": round(self.computation_time, 3)
             },
             "solutions": []
         }
@@ -157,7 +153,7 @@ class OutputFormatter:
     def _format_solution_json(self, rank, solution):
         """Format a solution for JSON output."""
         pieces_cut = sum(len(cut['cuts']) for cut in solution)
-        total_required_pieces = sum(r.get('quantity', 1) for r in self.required)
+        total_required_pieces = len(self.required)
         completion = (pieces_cut / total_required_pieces * 100) if total_required_pieces > 0 else 0
         total_waste = sum(self._calculate_waste(cut) for cut in solution)
         stock_used = len(solution)
@@ -165,20 +161,20 @@ class OutputFormatter:
         cutting_plan = []
         for cut in solution:
             num_cuts = len(cut['cuts']) - 1 if len(cut['cuts']) > 0 else 0
-            kerf_loss = num_cuts * self.kerf_m
+            kerf_loss = num_cuts * self.kerf
             waste = self._calculate_waste(cut)
             
             cutting_plan.append({
                 "stock_id": cut['stock_id'],
-                "stock_length_m": round(cut['stock_length_m'], 4),
+                "stock_length": cut['stock_length'],
                 "cuts": [
                     {
                         "id": c['id'],
-                        "length_m": round(c['length_m'], 4)
+                        "length": c['length']
                     } for c in cut['cuts']
                 ],
-                "kerf_loss_m": round(kerf_loss, 4),
-                "unused_m": round(waste, 4)
+                "kerf_loss": kerf_loss,
+                "unused": waste
             })
         
         # Determine unfulfilled pieces
@@ -191,7 +187,7 @@ class OutputFormatter:
                 "pieces_cut": pieces_cut,
                 "pieces_required": total_required_pieces,
                 "completion_percentage": round(completion, 2),
-                "total_waste_m": round(total_waste, 4),
+                "total_waste": total_waste,
                 "stock_pieces_used": stock_used
             },
             "cutting_plan": cutting_plan,

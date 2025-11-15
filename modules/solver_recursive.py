@@ -17,42 +17,13 @@ class RecursiveSolver:
         self.stock = stock
         self.required = required
         self.config = config
-        self.kerf_mm = config.get('kerf_mm', 0)
-        self.kerf_m = self.kerf_mm / 1000.0
+        self.kerf = config.get('kerf', 0)
         self.top_n = config.get('top_n_solutions', 10)
         self.logger = logging.getLogger(__name__)
-        
-        # Expand stock and required based on quantities
-        self.stock_expanded = self._expand_stock()
-        self.required_expanded = self._expand_required()
-        
+
         # Solution storage
         self.solutions = []
-    
-    def _expand_stock(self):
-        """Expand stock list based on quantities."""
-        expanded = []
-        for piece in self.stock:
-            for i in range(piece.get('quantity', 1)):
-                expanded.append({
-                    'id': f"{piece.get('id', 'S')}-{i+1}",
-                    'original_id': piece.get('id', 'S'),
-                    'length_m': piece['length_m']
-                })
-        return expanded
-    
-    def _expand_required(self):
-        """Expand required list based on quantities."""
-        expanded = []
-        for piece in self.required:
-            for i in range(piece.get('quantity', 1)):
-                expanded.append({
-                    'id': f"{piece.get('id', 'P')}-{i+1}",
-                    'original_id': piece.get('id', 'P'),
-                    'length_m': piece['length_m']
-                })
-        return expanded
-    
+
     def solve(self):
         """
         Solve the cutting optimization problem.
@@ -60,12 +31,12 @@ class RecursiveSolver:
         Returns:
             List of top N solutions
         """
-        self.logger.info(f"Stock pieces: {len(self.stock_expanded)}")
-        self.logger.info(f"Required pieces: {len(self.required_expanded)}")
+        self.logger.info(f"Stock pieces: {len(self.stock)}")
+        self.logger.info(f"Required pieces: {len(self.required)}")
         
         # Start recursive search
         current_solution = []
-        remaining_required = list(range(len(self.required_expanded)))
+        remaining_required = list(range(len(self.required)))
         
         self._recursive_search(current_solution, remaining_required, 0)
         
@@ -90,12 +61,12 @@ class RecursiveSolver:
             return
         
         # Base case: no more stock
-        if stock_idx >= len(self.stock_expanded):
+        if stock_idx >= len(self.stock):
             self._add_solution(current_solution)
             return
         
         # Get current stock piece
-        stock_piece = self.stock_expanded[stock_idx]
+        stock_piece = self.stock[stock_idx]
         
         # Generate all valid patterns for this stock
         patterns = self._generate_patterns_for_stock(stock_piece, remaining_required)
@@ -105,8 +76,8 @@ class RecursiveSolver:
             # Create new solution with this pattern
             new_solution = current_solution + [{
                 'stock_id': stock_piece['id'],
-                'stock_length_m': stock_piece['length_m'],
-                'cuts': [self.required_expanded[i] for i in pattern]
+                'stock_length': stock_piece['length'],
+                'cuts': [self.required[i] for i in pattern]
             }]
             
             # Update remaining required pieces
@@ -121,7 +92,7 @@ class RecursiveSolver:
     def _generate_patterns_for_stock(self, stock_piece, remaining_indices):
         """Generate valid cutting patterns for a stock piece."""
         # Filter required pieces to only remaining ones
-        remaining_pieces = [self.required_expanded[i] for i in remaining_indices]
+        remaining_pieces = [self.required[i] for i in remaining_indices]
         
         if not remaining_pieces:
             return []
@@ -130,7 +101,7 @@ class RecursiveSolver:
         
         # Try all combinations of remaining pieces
         self._find_combinations(
-            stock_piece['length_m'],
+            stock_piece['length'],
             remaining_pieces,
             remaining_indices,
             [],
@@ -144,8 +115,8 @@ class RecursiveSolver:
         """Find all valid combinations that fit in stock."""
         # Calculate current usage
         if current:
-            total_length = sum(pieces[indices.index(i)]['length_m'] for i in current)
-            kerf_loss = (len(current) - 1) * self.kerf_m if len(current) > 0 else 0
+            total_length = sum(pieces[indices.index(i)]['length'] for i in current)
+            kerf_loss = (len(current) - 1) * self.kerf if len(current) > 0 else 0
             used = total_length + kerf_loss
             
             if used <= stock_length:
@@ -186,9 +157,9 @@ class RecursiveSolver:
     
     def _calculate_cut_waste(self, cut):
         """Calculate waste for a single cut."""
-        stock_length = cut['stock_length_m']
-        cuts_length = sum(piece['length_m'] for piece in cut['cuts'])
+        stock_length = cut['stock_length']
+        cuts_length = sum(piece['length'] for piece in cut['cuts'])
         num_cuts = len(cut['cuts']) - 1 if len(cut['cuts']) > 0 else 0
-        kerf_loss = num_cuts * self.kerf_m
+        kerf_loss = num_cuts * self.kerf
         
         return stock_length - cuts_length - kerf_loss

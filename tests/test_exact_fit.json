@@ -1,16 +1,21 @@
 {
   "config": {
-    "kerf_mm": 3,
+    "kerf": 3,
     "top_n_solutions": 5,
     "algo_type": "recursive",
     "log_level": "INFO"
   },
   "stock": [
-    {"id": "S1", "length_m": 3.0, "quantity": 1},
-    {"id": "S2", "length_m": 2.0, "quantity": 1}
+    {"id": "S1", "length": 3000},
+    {"id": "S2", "length": 2000}
   ],
   "required": [
-    {"id": "P1", "length_m": 1.0, "quantity": 3},
-    {"id": "P2", "length_m": 0.5, "quantity": 4}
+    {"id": "P1-1", "length": 1000},
+    {"id": "P1-2", "length": 1000},
+    {"id": "P1-3", "length": 1000},
+    {"id": "P2-1", "length": 500},
+    {"id": "P2-2", "length": 500},
+    {"id": "P2-3", "length": 500},
+    {"id": "P2-4", "length": 500}
   ]
 }

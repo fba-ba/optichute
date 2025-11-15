@@ -36,29 +36,31 @@ class InputParser:
         
         # Validate stock pieces
         for i, piece in enumerate(self.data['stock']):
-            if 'length_m' not in piece:
-                raise ValueError(f"Stock piece {i} missing 'length_m'")
-            if piece['length_m'] <= 0:
+            if 'length' not in piece:
+                raise ValueError(f"Stock piece {i} missing 'length'")
+            if piece['length'] <= 0:
                 raise ValueError(f"Stock piece {i} has invalid length")
-            if 'quantity' not in piece:
-                piece['quantity'] = 1  # Default quantity
+            if 'id' not in piece:
+                raise ValueError(f"Stock piece {i} missing 'id'")
         
         # Validate required pieces
         for i, piece in enumerate(self.data['required']):
-            if 'length_m' not in piece:
-                raise ValueError(f"Required piece {i} missing 'length_m'")
-            if piece['length_m'] <= 0:
+            if 'length' not in piece:
+                raise ValueError(f"Required piece {i} missing 'length'")
+            if piece['length'] <= 0:
                 raise ValueError(f"Required piece {i} has invalid length")
-            if 'quantity' not in piece:
-                piece['quantity'] = 1  # Default quantity
+            if 'id' not in piece:
+                raise ValueError(f"Required piece {i} missing 'id'")
         
         # Validate config
         config = self.data.get('config', {})
-        if 'kerf_mm' not in config:
-            config['kerf_mm'] = 0  # Default: no kerf
+        if 'kerf' not in config:
+            config['kerf'] = 0  # Default: no kerf
         if 'top_n_solutions' not in config:
             config['top_n_solutions'] = 10  # Default: top 10
         if 'algo_type' not in config:
             config['algo_type'] = 'recursive'  # Default algorithm
         if 'log_level' not in config:
             config['log_level'] = 'INFO'  # Default log level
+        if 'timeout' not in config:
+            config['timeout'] = 0  # Default: no timeout
