@@ -1,0 +1,25 @@
+{
+  "config": {
+    "kerf": 3,
+    "top_n_solutions": 15,
+    "algo_type": "greedy",
+    "log_level": "DEBUG",
+    "delete_me": false
+  },
+  "stock": [
+    {"id": "A-1", "length": 3000},
+    {"id": "A-2", "length": 3000},
+    {"id": "B-1", "length": 2500},
+    {"id": "B-2", "length": 2500},
+    {"id": "C-1", "length": 1500},
+    {"id": "C-2", "length": 1500},
+    {"id": "C-3", "length": 1500}
+  ],
+  "required": [
+    {"id": "P1-1", "length": 600}, {"id": "P1-2", "length": 600}, {"id": "P1-3", "length": 600}, {"id": "P1-4", "length": 600}, {"id": "P1-5", "length": 600},
+    {"id": "P2-1", "length": 800}, {"id": "P2-2", "length": 800}, {"id": "P2-3", "length": 800}, {"id": "P2-4", "length": 800},
+    {"id": "P3-1", "length": 450}, {"id": "P3-2", "length": 450}, {"id": "P3-3", "length": 450}, {"id": "P3-4", "length": 450}, {"id": "P3-5", "length": 450}, {"id": "P3-6", "length": 450},
+    {"id": "P4-1", "length": 1200}, {"id": "P4-2", "length": 1200}, {"id": "P4-3", "length": 1200},
+    {"id": "P5-1", "length": 350}, {"id": "P5-2", "length": 350}, {"id": "P5-3", "length": 350}, {"id": "P5-4", "length": 350}, {"id": "P5-5", "length": 350}, {"id": "P5-6", "length": 350}, {"id": "P5-7", "length": 350}, {"id": "P5-8", "length": 350}
+  ]
+}

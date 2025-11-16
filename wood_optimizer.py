@@ -45,7 +45,7 @@ def main():
         print(f"Error: File '{input_file}' not found!")
         sys.exit(1)
     
-    config = {}
+    config = {}  # Initialize config here to ensure it's available in 'finally'
     output_file_success = None
     output_file_error = None
 
