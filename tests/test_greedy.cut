@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generated_at": "2025-11-16T19:29:06.402749",
+    "generated_at": "2025-11-16T19:49:00.232156",
     "version": "1.0.0"
   },
   "input_summary": {
@@ -8,7 +8,7 @@
     "total_required_length": 6350,
     "kerf": 3,
     "algo_type": "greedy",
-    "computation_time_s": 0.51
+    "computation_time_s": 0.406
   },
   "solutions": [
     {
