@@ -7,6 +7,7 @@ Optimizes the cutting of wood offcuts to minimize waste and maximize piece count
 import sys
 import json
 import time
+import io
 import multiprocessing
 from pathlib import Path
 
@@ -30,6 +31,12 @@ def run_solver_process(solver, result_list):
 
 def main():
     """Main entry point for the wood optimizer."""
+
+    # Force stdout/stderr to use UTF-8 encoding to prevent UnicodeEncodeError in non-interactive shells
+    if sys.stdout and sys.stdout.encoding != 'utf-8':
+        sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+    if sys.stderr and sys.stderr.encoding != 'utf-8':
+        sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
     
     # Check command line arguments
     if len(sys.argv) != 2:
