@@ -14,7 +14,7 @@ The script aims to:
 -   **Provide Flexibility**: It can generate multiple high-quality solutions, allowing you to choose the one that best fits your needs.
 -   **Ensure Accuracy**: It accounts for material lost during each cut, known as "kerf," which you can specify in millimeters.
 
-The optimizer supports two different algorithms: a precise `recursive` method for optimal results on smaller projects, and a fast `greedy` method for good, quick solutions on larger, more complex jobs.
+The optimizer supports two different algorithms: a precise `recursive` method for optimal results on smaller projects, and a fast `greedy` method for good, quick solutions on larger, more complex jobs. The greedy algorithm explores multiple heuristic approaches (different sorting strategies and fitting methods) to generate diverse, high-quality cutting plans.
 
 ---
 
@@ -56,7 +56,7 @@ This file contains all the information the optimizer needs. All length measureme
 -   **`config`**: This section holds general settings.
     -   `kerf`: The saw blade width in millimeters (e.g., `3`).
     -   `algo_type`: The algorithm to use (`recursive` or `greedy`).
-    -   `top_n_solutions`: The number of top-ranked solutions to display.
+    -   `top_n_solutions`: The number of top-ranked solutions to display. Both algorithms will generate multiple diverse solutions up to this limit. The greedy algorithm uses different sorting strategies and fitting heuristics to create varied cutting plans.
     -   `timeout` (optional): The maximum time in seconds the script is allowed to run before stopping.
     -   `delete_me` (optional): Set to `true` to automatically delete the input file after processing.
 
@@ -134,7 +134,7 @@ In this case, finding the perfect solution could take too long. You would set th
 }
 ```
 
-When you run the script, it will produce several very good (but not guaranteed to be perfect) cutting plans in just a few seconds. This allows you to quickly generate an efficient cutting list for the shop floor.
+When you run the script, it will produce several very good (but not guaranteed to be perfect) cutting plans in just a few seconds. The greedy algorithm automatically tries different approaches—such as fitting smallest pieces first versus largest pieces first, and using different stock ordering—to generate diverse solutions. This variety allows you to choose the cutting plan that best matches your workshop's constraints, whether you prioritize minimizing waste, reducing the number of stock pieces used, or achieving a particular cutting sequence.
 
 ---
 

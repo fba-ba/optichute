@@ -34,15 +34,31 @@ class GreedySolver:
         self.logger.info(f"Stock pieces: {len(self.stock)}")
         self.logger.info(f"Required pieces: {len(self.required)}")
         
-        strategies = [
-            ('First Fit Decreasing', self._first_fit_decreasing),
-            ('Best Fit Decreasing', self._best_fit_decreasing),
-            ('Worst Fit Decreasing', self._worst_fit_decreasing),
+        # Define sorting variations
+        sort_variations = [
+            ('desc_req_desc_stock', True, True),   # Both descending (original)
+            ('desc_req_asc_stock', True, False),   # Desc req, asc stock
+            ('asc_req_desc_stock', False, True),   # Asc req, desc stock
+            ('asc_req_asc_stock', False, False),   # Both ascending
         ]
         
-        for strategy_name, strategy_func in strategies:
-            self.logger.info(f"Trying strategy: {strategy_name}")
-            solution = strategy_func()
+        # Try each base strategy with different sorting variations
+        for sort_name, req_desc, stock_desc in sort_variations:
+            # First Fit
+            self.logger.info(f"Trying First Fit with {sort_name}")
+            solution = self._first_fit(req_desc, stock_desc)
+            if solution:
+                self.solutions.append(solution)
+            
+            # Best Fit
+            self.logger.info(f"Trying Best Fit with {sort_name}")
+            solution = self._best_fit(req_desc, stock_desc)
+            if solution:
+                self.solutions.append(solution)
+            
+            # Worst Fit  
+            self.logger.info(f"Trying Worst Fit with {sort_name}")
+            solution = self._worst_fit(req_desc, stock_desc)
             if solution:
                 self.solutions.append(solution)
         
@@ -53,17 +69,17 @@ class GreedySolver:
         unique_solutions = self._get_unique_solutions(self.solutions)
         return unique_solutions[:self.top_n]
     
-    def _first_fit_decreasing(self):
-        """First Fit Decreasing strategy."""
-        # Sort required pieces by length (descending)
+    def _first_fit(self, req_descending=True, stock_descending=True):
+        """First Fit strategy with configurable sorting."""
+        # Sort required pieces by length
         required_sorted = sorted(self.required, 
                                 key=lambda x: x['length'], 
-                                reverse=True)
+                                reverse=req_descending)
         
-        # Sort stock pieces by length (descending)
+        # Sort stock pieces by length
         stock_sorted = sorted(self.stock, 
                              key=lambda x: x['length'], 
-                             reverse=True)
+                             reverse=stock_descending)
         
         solution = []
         remaining_required = required_sorted[:]
@@ -99,16 +115,18 @@ class GreedySolver:
         
         return solution if solution else None
     
-    def _best_fit_decreasing(self):
-        """Best Fit Decreasing strategy - minimizes waste per stock piece."""
-        # Sort required pieces by length (descending)
+    def _best_fit(self, req_descending=True, stock_descending=True):
+        """Best Fit strategy - minimizes waste per stock piece."""
+        # Sort required pieces by length
         required_sorted = sorted(self.required, 
                                 key=lambda x: x['length'], 
-                                reverse=True)
+                                reverse=req_descending)
         
         solution = []
         remaining_required = required_sorted[:]
-        available_stock = self.stock[:]
+        available_stock = sorted(self.stock, 
+                                key=lambda x: x['length'], 
+                                reverse=stock_descending)
         
         while remaining_required and available_stock:
             best_fit = None
@@ -162,16 +180,19 @@ class GreedySolver:
         
         return solution if solution else None
     
-    def _worst_fit_decreasing(self):
-        """Worst Fit Decreasing strategy - spreads pieces across stock."""
-        # Sort required pieces by length (descending)
+    def _worst_fit(self, req_descending=True, stock_descending=True):
+        """Worst Fit strategy - spreads pieces across stock."""
+        # Sort required pieces by length
         required_sorted = sorted(self.required, 
                                 key=lambda x: x['length'], 
-                                reverse=True)
+                                reverse=req_descending)
         
-        # Initialize bins (stock pieces)
+        # Initialize bins (stock pieces) - sorted for consistency
+        stock_sorted = sorted(self.stock, 
+                             key=lambda x: x['length'], 
+                             reverse=stock_descending)
         bins = []
-        for stock_piece in self.stock:
+        for stock_piece in stock_sorted:
             bins.append({
                 'stock_id': stock_piece['id'],
                 'stock_length': stock_piece['length'],
