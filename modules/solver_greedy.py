@@ -248,8 +248,12 @@ class GreedySolver:
     
     def _solution_signature(self, solution):
         """Create a unique signature for a solution."""
-        pieces_cut = tuple(sorted([p['id'] for cut in solution for p in cut['cuts']]))
-        return pieces_cut
+        # Include both pieces AND their stock arrangement for true uniqueness
+        arrangement = tuple(
+            (cut['stock_id'], tuple(sorted([p['id'] for p in cut['cuts']])))
+            for cut in sorted(solution, key=lambda x: x['stock_id'])
+        )
+        return arrangement
     
     def _solution_score(self, solution):
         """Calculate score for a solution."""
